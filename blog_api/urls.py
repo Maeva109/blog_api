@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from users.views import UserViewSet
 from posts.views import PostViewSet
 
+#router = DefaultRouter()
+#router.register(r'posts', PostViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('users.urls')),
-    path('api/', include('posts.urls')),
+    path('api/', include('users.urls')),  # Inclure les URLs des utilisateurs
+    path('api/', include('posts.urls')),  # Inclure les URLs des posts
+    #path('', include(router.urls)),
 ]
