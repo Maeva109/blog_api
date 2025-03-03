@@ -1,30 +1,45 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE ='blog_api_image'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+    }
+
     stages {
-        stage('Build') {
+        stage('Clone Repository') {
             steps {
-                script {
-                    dockerImage = docker.build("my-django-app")
+                git 'https://github.com/Maeva109/blog_api.git'
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'python manage.py test'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withDockerRegistry([credentialsId: DOCKER_HUB_CREDENTIALS, url:'']){
+                    sh 'docker tag $DOCKER_IMAGE Maeva109/$DOCKER_IMAGE'
+                    sh 'docker push Maeva109/$DOCKER_IMAGE'
                 }
             }
         }
-        stage('Test') {
+
+        stage('Deploy'){
             steps {
-                script {
-                    dockerImage.inside {
-                        sh 'pytest'
-                    }
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    dockerImage.push("my-django-app:latest")
-                }
+                sh 'docker-compose up -d'
+    
             }
         }
     }
 }
-
