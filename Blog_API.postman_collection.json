@@ -1,0 +1,90 @@
+{
+    "info": {
+      "name": "Blog API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Create User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "http://localhost:8000/api/users/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["users", ""]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"username\": \"Maeva kamdooum\",\n    \"email\": \"makuetchemaeva9@gmail.com\",\n    \"password\": \"Bw-rbM6)!Q9$h($\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Get All Users",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "http://localhost:8000/api/users/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["users", ""]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Posts",
+        "item": [
+          {
+            "name": "Create Post",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "http://localhost:8000/api/posts/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["posts", ""]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"My First Blog Post\",\n    \"content\": \"This is my first blog post!\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Get All Posts",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "http://localhost:8000/api/posts/",
+                "protocol": "http",
+                "host": ["localhost"],
+                "port": "8000",
+                "path": ["posts", ""]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
