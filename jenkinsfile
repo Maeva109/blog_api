@@ -1,44 +1,35 @@
 pipeline {
     agent any
-
     environment {
-        DOCKER_IMAGE ='blog_api_image'
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKER_IMAGE = 'maeva804/blog_ap-app'
+        DOCKER_TAG = '1.0'
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/Maeva109/blog_api.git'
+                git branch: 'main', url: 'https://github.com/Maeva109/blog_api.git'
             }
         }
-
-        stage('Build and Test') {
-            steps {
-                sh 'pip install -r requirements.txt'
-                sh 'python manage.py test'
-            }
-        }
-
+   
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                withDockerRegistry([credentialsId: DOCKER_HUB_CREDENTIALS, url:'']){
-                    sh 'docker tag $DOCKER_IMAGE Maeva109/$DOCKER_IMAGE'
-                    sh 'docker push Maeva109/$DOCKER_IMAGE'
+                script {
+                    bat """
+                    docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    """
                 }
             }
         }
-
-        stage('Deploy'){
+        
+        stage('Deploy Locally') {
             steps {
-                sh 'docker-compose up -d'
-    
+                script {
+                    bat """
+                    docker-compose down || exit 0
+                    docker-compose up -d
+                    """
+                }
             }
         }
     }
